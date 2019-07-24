@@ -1,0 +1,10 @@
+{
+    "name": "service",
+    "query": {
+
+    },
+    "list": [{
+        "field": "",
+        "filter": ""
+    }]
+}
