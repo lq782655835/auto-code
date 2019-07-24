@@ -76,63 +76,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import ListMixin from '@/mixins/list'
 import ModifyDialog from '@/components/model/modify-dialog.vue'
-import DetailDialog from '@/components/model/detail-dialog.vue'
 import { getListData, delById } from '@/server'
-import { MODEL_STATUS_MAP, MODEL_RESOURCE_TYPE_MAP } from '@/utils/config'
-
-// 按钮禁用根据status状态而定，true代表禁用，false代表不禁用
-const OperationDisabled = {
-    editModel: {
-        [MODEL_STATUS_MAP.CREATING]: true,
-        [MODEL_STATUS_MAP.CREATE_FAIL]: true,
-        [MODEL_STATUS_MAP.AVALIABLE]: false,
-        [MODEL_STATUS_MAP.PENDING]: true,
-        [MODEL_STATUS_MAP.WAITING]: true,
-        [MODEL_STATUS_MAP.ERROR]: true,
-        [MODEL_STATUS_MAP.UPDATING]: true,
-        [MODEL_STATUS_MAP.UPDATE_FAIL]: false
-    },
-    editService: {
-        [MODEL_STATUS_MAP.CREATING]: true,
-        [MODEL_STATUS_MAP.CREATE_FAIL]: true,
-        [MODEL_STATUS_MAP.AVALIABLE]: false,
-        [MODEL_STATUS_MAP.PENDING]: true,
-        [MODEL_STATUS_MAP.WAITING]: true,
-        [MODEL_STATUS_MAP.ERROR]: true,
-        [MODEL_STATUS_MAP.UPDATING]: true,
-        [MODEL_STATUS_MAP.UPDATE_FAIL]: true
-    },
-    view: {
-        [MODEL_STATUS_MAP.CREATING]: true,
-        [MODEL_STATUS_MAP.CREATE_FAIL]: true,
-        [MODEL_STATUS_MAP.AVALIABLE]: false,
-        [MODEL_STATUS_MAP.PENDING]: true,
-        [MODEL_STATUS_MAP.WAITING]: true,
-        [MODEL_STATUS_MAP.ERROR]: true,
-        [MODEL_STATUS_MAP.UPDATING]: true,
-        [MODEL_STATUS_MAP.UPDATE_FAIL]: true
-    },
-    delete: {
-        [MODEL_STATUS_MAP.CREATING]: true,
-        [MODEL_STATUS_MAP.CREATE_FAIL]: false,
-        [MODEL_STATUS_MAP.AVALIABLE]: false,
-        [MODEL_STATUS_MAP.PENDING]: false,
-        [MODEL_STATUS_MAP.WAITING]: false,
-        [MODEL_STATUS_MAP.ERROR]: false,
-        [MODEL_STATUS_MAP.UPDATING]: true,
-        [MODEL_STATUS_MAP.UPDATE_FAIL]: false
-    }
-}
-
-// 计算资源总数
-export const formatModelResourceTotal = ({ singleCopyResource, copyNumber, resourceType }) => {
-    let [first, second, third] = singleCopyResource.split('-').map(str => Number(str) * copyNumber)
-    if (resourceType === MODEL_RESOURCE_TYPE_MAP.CPU) {
-        return `${first}核${second}G`
-    } else {
-        return `${first}卡${second}核${third}G`
-    }
-}
 
 @Component
 export default class Model extends Mixins(ListMixin) {

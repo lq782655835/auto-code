@@ -1,17 +1,13 @@
 const Handlebars = require('handlebars');
-// const fs = require('fs-extra')
+const fs = require('fs-extra')
 const data = require('./config.json')
-const fs = require('fs');
-// const util = require('util');
-// const readFile = util.promisify(fs.readFile);
+const util = require('./util')
+const readFile = require('util').promisify(fs.readFile);
 
-fs.readFile('./template/server.ts', {encoding:"utf-8"}, function(err, file) {
-    if (err) {
-        console.error(err)
-        return
-    }
-
+let init =  async () => {
+    let file = await readFile(util.path('./template/server.ts'), {encoding:"utf-8"})
     var template = Handlebars.compile(file);
     var result = template(data);
     console.log(result)
-})
+}
+init()

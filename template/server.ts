@@ -1,7 +1,7 @@
 import http from '../http'
 
 // 列表
-export const get{{name}}ListData = data =>
+export const get{{name}}List = data =>
     http({
         url: `/inference/service/list`,
         method: 'get',
@@ -9,21 +9,21 @@ export const get{{name}}ListData = data =>
     })
 
 // 详情
-export const getDetailById = serviceId =>
+export const get{{name}}DetailById = id =>
     http({
-        url: `/inference/service?serviceId=${serviceId}`,
+        url: `/inference/service?id=${id}`,
         method: 'get'
     })
 
 // 删除单条
-export const delById = serviceId =>
+export const del{{name}}ById = id =>
     http({
-        url: `/inference/service?serviceId=${serviceId}`,
+        url: `/inference/service?id=${id}`,
         method: 'delete'
     })
 
-/** 创建 */
-export const create = data =>
+// 创建
+export const create{{name}} = data =>
     http({
         url: '/inference/service',
         method: 'POST',
@@ -31,7 +31,7 @@ export const create = data =>
     })
 
 // 更新
-export const updateService = data =>
+export const update{{name}} = data =>
     http({
         url: '/inference/service',
         method: 'PUT',
