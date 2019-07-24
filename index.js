@@ -7,8 +7,11 @@ doT.templateSettings.strip = false
 
 // 自解析制定目录下.jst后缀
 // http://jinlong.github.io/doT/
-doT.process({path: util.path('./template')});
-var pageFunc = require('./template/server')
+doT.process({
+    path: util.path('./template'),
+    destination: './dist'
+});
+var pageFunc = require('./dist/server')
 var result = pageFunc(data)
 console.log(result)
 

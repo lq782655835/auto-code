@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "springleo <782655835@qq.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
   "devDependencies": {
     "handlebars": "^4.1.2"
   },
