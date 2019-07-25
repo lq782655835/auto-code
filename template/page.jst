@@ -1,3 +1,6 @@
+{{##def.capitalizeName:
+{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}
+#}}
 <template>
     <u-layout dir="v" class="page-{{=it.name}}">
         <el-table :data="list" border stripe style="width: 98%">
@@ -30,12 +33,12 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import ListMixin from '@/mixins/list'
 import ModifyDialog from '@/components/model/modify-dialog.vue'
-import { get{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}List,
-    del{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}ById } from '@/server'
+import { get{{#def.capitalizeName}}List,
+    del{{#def.capitalizeName}}ById } from '@/server'
 
 @Component
-export default class {{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}} extends Mixins(ListMixin) {
-    listService = get{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}List
+export default class {{#def.capitalizeName}} extends Mixins(ListMixin) {
+    listService = get{{#def.capitalizeName}}List
 }
 </script>
 

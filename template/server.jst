@@ -1,39 +1,40 @@
+{{##def.capitalizeName:{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}#}}
 import http from '../http'
 
 // 列表
-export const get{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}List = data =>
+export const get{{#def.capitalizeName}}List = data =>
     http({
-        url: `/inference/service/list`,
+        url: `/inference/{{=it.name}}/list`,
         method: 'get',
         data
     })
 
 // 详情
-export const get{{=it.name}}DetailById = id =>
+export const get{{#def.capitalizeName}}DetailById = id =>
     http({
-        url: `/inference/service?id=${id}`,
+        url: `/inference/{{=it.name}}?id=${id}`,
         method: 'get'
     })
 
 // 删除单条
-export const del{{=it.name}}ById = id =>
+export const del{{#def.capitalizeName}}ById = id =>
     http({
-        url: `/inference/service?id=${id}`,
+        url: `/inference/{{=it.name}}?id=${id}`,
         method: 'delete'
     })
 
 // 创建
-export const create{{=it.name}} = data =>
+export const create{{#def.capitalizeName}} = data =>
     http({
-        url: '/inference/service',
+        url: '/inference/{{=it.name}}',
         method: 'POST',
         data
     })
 
 // 更新
-export const update{{=it.name}} = data =>
+export const update{{#def.capitalizeName}} = data =>
     http({
-        url: '/inference/service',
+        url: '/inference/{{=it.name}}',
         method: 'PUT',
         data
     })
