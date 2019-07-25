@@ -11,7 +11,7 @@ doT.process({
     path: util.path('./template'),
     destination: './dist'
 });
-var pageFunc = require('./dist/server')
+var pageFunc = require('./dist/page')
 var result = pageFunc(data)
 console.log(result)
 

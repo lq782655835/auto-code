@@ -1,7 +1,7 @@
 import http from '../http'
 
 // 列表
-export const get{{=it.name.toUpperCase()}}List = data =>
+export const get{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}List = data =>
     http({
         url: `/inference/service/list`,
         method: 'get',

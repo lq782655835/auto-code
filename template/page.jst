@@ -1,0 +1,42 @@
+<template>
+    <u-layout dir="v" class="page-{{=it.name}}">
+        <el-table :data="list" border stripe style="width: 98%">
+            {{~it.list.tableConfig :item:index}}
+            <el-table-column prop="{{=item.prop}}" label="{{=item.label}}" {{?item.width}}width="{{=item.width}}"{{?}}/>
+            {{~}}
+            <el-table-column label="服务操作" width="240px">
+                <template slot-scope="scope">
+                    <u-layout gap="s">
+                        {{~it.list.operation :link}}
+                        <el-link type="{{=link.color}}">{{=link.label}}</el-link>
+                        {{~}}
+                    </u-layout>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination
+            background
+            layout="prev, pager, next"
+            :page-size="pageSize"
+            :current-page.sync="page"
+            @current-change="refreshCurrentPage"
+            :total="total"
+        >
+        </el-pagination>
+    </u-layout>
+</template>
+
+<script lang="ts">
+import { Component, Mixins } from 'vue-property-decorator'
+import ListMixin from '@/mixins/list'
+import ModifyDialog from '@/components/model/modify-dialog.vue'
+import { get{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}List,
+    del{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}ById } from '@/server'
+
+@Component
+export default class {{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}} extends Mixins(ListMixin) {
+    listService = get{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}List
+}
+</script>
+
+<style lang="scss" scoped></style>
