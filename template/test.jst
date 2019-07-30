@@ -1,0 +1,13 @@
+{{##def.capitalizeName:{{=it.server.conflict+it.name.charAt(0).toUpperCase()+it.name.slice(1)}}#}}
+
+{{##def.list:get{{#def.capitalizeName}}List#}}
+{{##def.detail:get{{#def.capitalizeName}}DetailById#}}
+{{##def.del:del{{#def.capitalizeName}}ById#}}
+{{##def.create:create{{#def.capitalizeName}}#}}
+{{##def.update:update{{#def.capitalizeName}}#}}
+
+{{#def.list}}
+{{#def.detail}}
+{{#def.del}}
+{{#def.create}}
+{{#def.update}}

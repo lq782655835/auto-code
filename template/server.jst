@@ -1,40 +1,48 @@
-{{##def.capitalizeName:{{=it.name.charAt(0).toUpperCase()+it.name.slice(1)}}#}}
+{{##def.capitalizeName:{{=it.server.conflict+it.name.charAt(0).toUpperCase()+it.name.slice(1)}}#}}
+
+{{##def.list:get{{#def.capitalizeName}}List#}}
+{{##def.detail:get{{#def.capitalizeName}}DetailById#}}
+{{##def.del:del{{#def.capitalizeName}}ById#}}
+{{##def.create:create{{#def.capitalizeName}}#}}
+{{##def.update:update{{#def.capitalizeName}}#}}
+
 import http from '../http'
 
 // 列表
-export const get{{#def.capitalizeName}}List = data =>
+export const {{#def.list}} = data =>
     http({
-        url: `/inference/{{=it.name}}/list`,
+        url: `{{=it.server.prefix}}/{{=it.name}}/list`,
         method: 'get',
         data
     })
 
 // 详情
-export const get{{#def.capitalizeName}}DetailById = id =>
+export const {{#def.detail}} = id =>
     http({
-        url: `/inference/{{=it.name}}?id=${id}`,
+        url: `{{=it.server.prefix}}/{{=it.name}}?id=${id}`,
         method: 'get'
     })
 
 // 删除单条
-export const del{{#def.capitalizeName}}ById = id =>
+export const {{#def.del}} = id =>
     http({
-        url: `/inference/{{=it.name}}?id=${id}`,
-        method: 'delete'
+        url: `{{=it.server.prefix}}/{{=it.name}}`,
+        method: 'delete',
+        data: {id}
     })
 
 // 创建
-export const create{{#def.capitalizeName}} = data =>
+export const {{#def.create}} = data =>
     http({
-        url: '/inference/{{=it.name}}',
+        url: '{{=it.server.prefix}}/{{=it.name}}',
         method: 'POST',
         data
     })
 
 // 更新
-export const update{{#def.capitalizeName}} = data =>
+export const {{#def.update}} = data =>
     http({
-        url: '/inference/{{=it.name}}',
+        url: '{{=it.server.prefix}}/{{=it.name}}',
         method: 'PUT',
         data
     })

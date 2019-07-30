@@ -1,0 +1,74 @@
+{{##def.capitalizeName:{{=it.server.conflict+it.name.charAt(0).toUpperCase()+it.name.slice(1)}}#}}
+
+{{##def.list:get{{#def.capitalizeName}}List#}}
+{{##def.detail:get{{#def.capitalizeName}}DetailById#}}
+{{##def.del:del{{#def.capitalizeName}}ById#}}
+{{##def.create:create{{#def.capitalizeName}}#}}
+{{##def.update:update{{#def.capitalizeName}}#}}
+<template>
+    <u-layout dir="v" class="page-{{=it.name}}">
+        {{? it.query}}
+        <u-layout dir="h" class="common-query">
+            {{ for(var prop in it.query){ }}
+            <{{=it.query[prop].ui}}
+                v-model="condition.{{=prop}}"
+                placeholder="{{=it.query[prop].placeholder}}"
+                clearable
+                @keyup.enter.native="refresh"
+            />
+            <el-button type="primary" @click="refresh" :visible="!loading">查询</el-button>
+            {{ } }}
+        </u-layout>
+        {{?}}
+        <el-table :data="list" border stripe style="width: 98%">
+            {{~it.list.tableConfig :item:index}}
+            {{? !item.filter}}
+            <el-table-column prop="{{=item.prop}}" label="{{=item.label}}" {{?item.width}}width="{{=item.width}}"{{?}}/>
+            {{??}}
+            <el-table-column prop="{{=item.prop}}" label="{{=item.label}}" {{?item.width}}width="{{=item.width}}"{{?}}>
+                <template slot-scope="scope">
+                    scope.row.{{=item.prop}} || {{=item.filter}}
+                </template>
+            </el-table-column>
+            {{?}}
+            {{~}}
+            <el-table-column label="服务操作" width="240px">
+                <template slot-scope="scope">
+                    <u-layout gap="s">
+                        {{~it.list.operation :link}}
+                        <el-link type="{{=link.color}}" @click="{{=link.event}}Row(scope.row)">{{=link.label}}</el-link>
+                        {{~}}
+                    </u-layout>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination
+            background
+            layout="prev, pager, next"
+            :page-size="pageSize"
+            :current-page.sync="page"
+            @current-change="refreshCurrentPage"
+            :total="total"
+        >
+        </el-pagination>
+    </u-layout>
+</template>
+
+<script lang="ts">
+import { Component, Mixins } from 'vue-property-decorator'
+import ListMixin from '@/mixins/list'
+import { {{#def.list}}, {{#def.del}} } from '@/server'
+
+@Component
+export default class {{#def.capitalizeName}} extends Mixins(ListMixin) {
+    listService = get{{#def.capitalizeName}}List
+
+    {{~it.list.operation :link}}
+    {{=link.event}}Row({ id }) {
+        {{#def.del}}().then(() => this.refreshCurrentPage())
+    }
+    {{~}}
+}
+</script>
+
+<style lang="scss" scoped></style>
