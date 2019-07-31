@@ -1,0 +1,112 @@
+{{##def.capitalizeName:{{=it.server.conflict+it.name.charAt(0).toUpperCase()+it.name.slice(1)}}#}}
+
+{{##def.list:get{{#def.capitalizeName}}List#}}
+{{##def.detail:get{{#def.capitalizeName}}DetailById#}}
+{{##def.del:del{{#def.capitalizeName}}ById#}}
+{{##def.create:create{{#def.capitalizeName}}#}}
+{{##def.update:update{{#def.capitalizeName}}#}}
+<template>
+    <el-dialog
+        :title="getTitleText"
+        :visible.sync="visible"
+        center
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+    >
+        <u-layout dir="v">
+                <el-form
+                    :model="form"
+                    :rules="rules"
+                    ref="refForm"
+                    label-position="right"
+                    label-width="100px"
+                >
+                    {{~it.properties :item:index}}
+                    <el-form-item label="{{=item.label}}" prop="{{=item.prop}}">
+                        <{{=item.ui}}
+                            v-model.trim="form.{{=item.prop}}"
+                            placeholder="{{=item.placeholder}}"
+                        >
+                            {{? item.data}}
+                                {{~item.data :optionItem}}
+                                    <el-option label="{{=optionItem.label}}" value="{{=optionItem.value}}"/>
+                                {{~}}
+                            {{?}}
+                        </{{=item.ui}}>
+                    </el-form-item>
+                    {{~}}
+                </el-form>
+                <u-layout alignment="center">
+                    <el-button type="primary" @click="submit">{{='{'+'{getSubmitBtnText}'+'}'}}</el-button>
+                    <el-button @click="close(false)">取消</el-button>
+                </u-layout>
+            </u-layout>
+    </el-dialog>
+</template>
+
+<script lang="ts">
+import { Component, Mixins, Prop } from 'vue-property-decorator'
+import ModelCloseMixin from '@/mixins/model-close'
+import { {{#def.detail}}, {{#def.create}}, {{#def.update}} } from '@/server'
+
+@Component
+export default class ProjectModifyDialog extends Mixins(ModelCloseMixin) {
+    @Prop(Number) id: number // 无值代表新增
+
+    get isAddPage(): boolean {
+        return typeof this.id === 'undefined'
+    }
+
+    get getTitleText(): string {
+        return this.isAddPage ? '新增{{=it.cnName}}' : '修改{{=it.cnName}}'
+    }
+    get getSubmitBtnText(): string {
+        return this.isAddPage ? '确认新增' : '确认修改'
+    }
+
+    form = {
+        {{~it.properties :item:index}}
+        {{=item.prop}}: {{=item.defaultValue}},
+        {{~}}
+    }
+
+    rules = {
+        {{~it.properties :item:index}}
+        {{? item.required}}
+        {{=item.prop}}: [{ required: true, message: '{{=item.required}}', trigger: 'blur' }],
+        {{?}}
+        {{~}}
+    }
+
+    async mounted() {
+        if (this.isAddPage) {
+            console.log('new add')
+        } else {
+            this.form = await {{#def.detail}}(this.id) as any
+        }
+    }
+
+    /** 提交表单 */
+    async submit() {
+        let isPass = await (this.$refs['refForm'] as any).validate()
+        if (!isPass) return
+
+        if (this.isAddPage) {
+            this.addToDatabase()
+        } else {
+            this.editToDatabase()
+        }
+    }
+
+    async addToDatabase() {
+        {{#def.create}}(this.form).then(data => this.close(true))
+    }
+
+    async editToDatabase() {
+        {{#def.update}}(this.form).then(data => this.close(true))
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+</style>

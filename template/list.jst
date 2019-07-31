@@ -9,25 +9,36 @@
     <u-layout dir="v" class="page-{{=it.name}}">
         {{? it.query}}
         <u-layout dir="h" class="common-query">
-            {{ for(var prop in it.query){ }}
-            <{{=it.query[prop].ui}}
-                v-model="condition.{{=prop}}"
-                placeholder="{{=it.query[prop].placeholder}}"
-                clearable
-                @keyup.enter.native="refresh"
-            />
+            {{~it.query :item}}
+                <{{=item.ui}}
+                    v-model="condition.{{=item.prop}}"
+                    placeholder="{{=item.placeholder}}"
+                >
+                    {{? item.data}}
+                        {{~item.data :optionItem}}
+                            <el-option label="{{=optionItem.label}}" value="{{=optionItem.value}}"/>
+                        {{~}}
+                    {{?}}
+                </{{=item.ui}}>
+            {{~}}
             <el-button type="primary" @click="refresh" :visible="!loading">查询</el-button>
-            {{ } }}
+        </u-layout>
+        {{?}}
+        {{? it.operation}}
+        <u-layout dir="h" class="common-operation">
+            {{~it.operation :item}}
+            <el-button type="{{=item.color}}" @click="{{=item.event}}">{{=item.label}}</el-button>
+            {{~}}
         </u-layout>
         {{?}}
         <el-table :data="list" border stripe style="width: 98%">
-            {{~it.list.tableConfig :item:index}}
+            {{~it.list.tableConfig :item}}
             {{? !item.filter}}
             <el-table-column prop="{{=item.prop}}" label="{{=item.label}}" {{?item.width}}width="{{=item.width}}"{{?}}/>
             {{??}}
             <el-table-column prop="{{=item.prop}}" label="{{=item.label}}" {{?item.width}}width="{{=item.width}}"{{?}}>
                 <template slot-scope="scope">
-                    scope.row.{{=item.prop}} || {{=item.filter}}
+                    {{='{'+'{'+'scope.row.'+item.prop}} | {{=item.filter+'}'+'}'}}
                 </template>
             </el-table-column>
             {{?}}
@@ -36,7 +47,7 @@
                 <template slot-scope="scope">
                     <u-layout gap="s">
                         {{~it.list.operation :link}}
-                        <el-link type="{{=link.color}}" @click="{{=link.event}}Row(scope.row)">{{=link.label}}</el-link>
+                        <el-link type="{{=link.color}}" @click="{{=link.event}}(scope.row)">{{=link.label}}</el-link>
                         {{~}}
                     </u-layout>
                 </template>
@@ -58,16 +69,29 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import ListMixin from '@/mixins/list'
 import { {{#def.list}}, {{#def.del}} } from '@/server'
+import ModifyDialog from './dialog'
 
 @Component
 export default class {{#def.capitalizeName}} extends Mixins(ListMixin) {
-    listService = get{{#def.capitalizeName}}List
+    listService = {{#def.list}}
 
-    {{~it.list.operation :link}}
-    {{=link.event}}Row({ id }) {
-        {{#def.del}}().then(() => this.refreshCurrentPage())
+    condition = {
+        {{~it.query :item}}
+        {{=item.prop}}: {{=item.defaultValue}},
+        {{~}}
     }
-    {{~}}
+
+    createRow() {
+        this.$openDialog(ModifyDialog)().then(() => this.doneSuccessOperation('创建{{=it.cnName}}成功'))
+    }
+
+    editRow({ id }) {
+        this.$openDialog(ModifyDialog)({id}).then(() => this.doneSuccessOperation('更新{{=it.cnName}}成功'))
+    }
+
+    delRow({ id }) {
+        {{#def.del}}(id).then(() => this.refreshCurrentPage())
+    }
 }
 </script>
 

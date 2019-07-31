@@ -7,7 +7,7 @@ doT.templateSettings.strip = false
 
 let {dist, out} = {
     dist: './dist',
-    out: false ? './dist' : `/Users/liaoqiao/netease/deeplearn-fed-platform/src/pages`
+    out: false ? './dist' : `/Users/liaoqiao/netease/deeplearn-fed-platform/src/pages/project`
 }
 
 fs.ensureDirSync(dist)
@@ -19,7 +19,7 @@ doT.process({
     path: util.path('./template'),
     destination: dist
 });
-['project', 'test'].forEach(file => {
+['list', 'dialog'].forEach(file => {
     writeFile(file)
 })
 
