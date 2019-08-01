@@ -21,13 +21,13 @@
                     {{?}}
                 </{{=item.ui}}>
             {{~}}
-            <el-button type="primary" @click="refresh" :visible="!loading">查询</el-button>
+            <el-button type="primary" @click="refresh" :disabled="loading">查询</el-button>
         </u-layout>
         {{?}}
         {{? it.operation}}
         <u-layout dir="h" class="common-operation">
             {{~it.operation :item}}
-            <el-button type="{{=item.color}}" @click="{{=item.event}}">{{=item.label}}</el-button>
+            <el-button type="{{=item.color}}" @click="{{=item.event}}" icon="{{=item.icon}}">{{=item.label}}</el-button>
             {{~}}
         </u-layout>
         {{?}}
@@ -43,7 +43,7 @@
             </el-table-column>
             {{?}}
             {{~}}
-            <el-table-column label="服务操作" width="240px">
+            <el-table-column label="服务操作" width="150px">
                 <template slot-scope="scope">
                     <u-layout gap="s">
                         {{~it.list.operation :link}}
