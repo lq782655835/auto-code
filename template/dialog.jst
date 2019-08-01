@@ -58,10 +58,10 @@ export default class ProjectModifyDialog extends Mixins(ModelCloseMixin) {
     }
 
     get getTitleText(): string {
-        return this.isAddPage ? '新增{{=it.cnName}}' : '修改{{=it.cnName}}'
+        return this.isAddPage ? '新建{{=it.cnName}}' : '修改{{=it.cnName}}'
     }
     get getSubmitBtnText(): string {
-        return this.isAddPage ? '确认新增' : '确认修改'
+        return this.isAddPage ? '确认' : '确认修改'
     }
 
     form = {

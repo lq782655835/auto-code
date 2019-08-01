@@ -11,7 +11,7 @@ import http from '../http'
 // 列表
 export const {{#def.list}} = data =>
     http({
-        url: `{{=it.server.prefix}}/{{=it.name}}/list`,
+        url: `{{=it.server.prefix}}/{{=it.name}}`,
         method: 'get',
         data
     })
@@ -19,8 +19,9 @@ export const {{#def.list}} = data =>
 // 详情
 export const {{#def.detail}} = id =>
     http({
-        url: `{{=it.server.prefix}}/{{=it.name}}?id=${id}`,
-        method: 'get'
+        url: `{{=it.server.prefix}}/{{=it.name}}`,
+        method: 'get',
+        data: {id}
     })
 
 // 删除单条
