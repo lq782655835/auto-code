@@ -1,6 +1,6 @@
 {{##def.capitalizeName:{{=it.server.conflict+it.name.charAt(0).toUpperCase()+it.name.slice(1)}}#}}
 
-{{##def.list:get{{#def.capitalizeName}}List#}}
+{{##def.list1:get{{#def.capitalizeName}}List#}}
 {{##def.detail:get{{#def.capitalizeName}}DetailById#}}
 {{##def.del:del{{#def.capitalizeName}}ById#}}
 {{##def.create:create{{#def.capitalizeName}}#}}
@@ -68,12 +68,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import ListMixin from '@/mixins/list'
-import { {{#def.list}}, {{#def.del}} } from '@/server'
+import { {{#def.list1}}, {{#def.del}} } from '@/server'
 import ModifyDialog from './dialog'
 
 @Component
 export default class {{#def.capitalizeName}} extends Mixins(ListMixin) {
-    listService = {{#def.list}}
+    listService = {{#def.list1}}
 
     condition = {
         {{~it.query :item}}
