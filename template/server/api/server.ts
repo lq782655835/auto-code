@@ -1,6 +1,6 @@
 {{##def.capitalizeName:{{=it.server.conflict+it.name.charAt(0).toUpperCase()+it.name.slice(1)}}#}}
 
-{{##def.list:get{{#def.capitalizeName}}List#}}
+{{##def.list1:get{{#def.capitalizeName}}List#}}
 {{##def.detail:get{{#def.capitalizeName}}DetailById#}}
 {{##def.del:del{{#def.capitalizeName}}ById#}}
 {{##def.create:create{{#def.capitalizeName}}#}}
@@ -9,7 +9,7 @@
 import http from '../http'
 
 // 列表
-export const {{#def.list}} = data =>
+export const {{#def.list1}} = data =>
     http({
         url: `{{=it.server.prefix}}/{{=it.name}}`,
         method: 'get',

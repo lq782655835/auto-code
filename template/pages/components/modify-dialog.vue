@@ -50,7 +50,7 @@ import ModelCloseMixin from '@/mixins/model-close'
 import { {{#def.detail}}, {{#def.create}}, {{#def.update}} } from '@/server'
 
 @Component
-export default class ProjectModifyDialog extends Mixins(ModelCloseMixin) {
+export default class ModifyDialog extends Mixins(ModelCloseMixin) {
     @Prop(Number) id: number // 无值代表新增
 
     get isAddPage(): boolean {

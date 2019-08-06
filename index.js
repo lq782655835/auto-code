@@ -1,43 +1,50 @@
-const doT = require('dot')
-const fs = require('fs-extra')
-const data = require('./config')
-const util = require('./util')
-const readFile = require('util').promisify(fs.readFile);
-doT.templateSettings.strip = false
+const Metalsmith = require("metalsmith");
+const async = require("async");
+const path = require("path");
 
-let {dist, out} = {
-    dist: './dist',
-    out: false ? './dist' : `/Users/liaoqiao/netease/deeplearn-fed-platform/src/pages/project`
+// template engine
+const render = require("consolidate").dot.render;
+const doT = require("dot");
+doT.templateSettings.strip = false;
+
+const util = require("./util");
+const source = util.path("template");
+const dest = util.path("dist");
+
+Metalsmith(source)
+  .metadata(require("./config")) // data source
+  .use(renderTemplateFiles())
+  .source(".") // start from template root instead of `./src` which is Metalsmith's default for `source`
+  .destination(dest)
+  .clean(true)
+  .build(function(err, files) {
+    if (err) {
+      throw err;
+    }
+  });
+
+function renderTemplateFiles(skipInterpolation) {
+  return (files, metalsmith, done) => {
+    const keys = Object.keys(files);
+    const metalsmithMetadata = metalsmith.metadata();
+    async.each(
+      keys,
+      (file, next) => {
+        const str = files[file].contents.toString();
+        // do not attempt to render files that do not have mustaches
+        if (!/{{([^{}]+)}}/g.test(str)) {
+          return next();
+        }
+        render(str, metalsmithMetadata, (err, res) => {
+          if (err) {
+            err.message = `[${file}] ${err.message}`;
+            return next(err);
+          }
+          files[file].contents = new Buffer(res);
+          next();
+        });
+      },
+      done
+    );
+  };
 }
-
-fs.ensureDirSync(dist)
-fs.ensureDirSync(out)
-
-// 自解析制定目录下.jst后缀
-// http://jinlong.github.io/doT/
-doT.process({
-    path: util.path('./template'),
-    destination: dist
-});
-['list', 'dialog'].forEach(file => {
-    writeFile(file)
-})
-
-function writeFile(file) {
-    var pageFunc = require(`${dist}/${file}`)
-    var result = pageFunc(data)
-    fs.writeFile(util.path(`${out}/${file}.vue`), result, function(err) {
-        if (err) throw err
-        console.log('success write')
-    })
-}
-
-
-
-// let init =  async () => {
-//     let file = await readFile(util.path('./template/server.ts'), {encoding:"utf-8"})
-//     var template = doT.template(file);
-//     var result = template(data);
-//     console.log(result)
-// }
-// init()
