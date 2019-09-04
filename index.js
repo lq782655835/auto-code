@@ -9,7 +9,7 @@ doT.templateSettings.strip = false;
 
 const util = require("./util");
 const source = util.path("template");
-const dest = util.path("dist");
+const dest = util.path( true ? './dist' : "/Users/liaoqiao/netease/deeplearn-fed-platform/src");
 
 Metalsmith(source)
   .metadata(require("./config")) // data source

@@ -1,110 +1,77 @@
 module.exports = {
-  name: "project",
-  cnName: "项目",
+  name: "jupyter",
+  cnName: "实例",
   server: {
-    conflict: "Inference",
-    prefix: "/auth/inference"
+    conflict: "",
+    prefix: "/jupyter/instance"
   },
-  query: [
-    {
-      prop: "searchType",
-      ui: "el-select",
-      placeholder: "请选择类型",
-      defaultValue: "'1'",
-      data: [
-        {
-          label: "项目名称",
-          value: "1"
-        },
-        {
-          label: "归属部门",
-          value: "2"
-        },
-        {
-          label: "项目管理员",
-          value: "3"
-        }
-      ]
+  filterConfig: {
+    condition: {
+      search: ''
     },
-    {
-      prop: "search",
-      ui: "el-input",
-      placeholder: "请输入查询关键字",
-      defaultValue: "''"
-    }
-  ],
-  operation: [
-    {
-      label: "新建项目",
-      color: "primary",
-      icon: "el-icon-plus",
-      event: "createRow"
-    }
-  ],
-  list: {
-    tableConfig: [
-      {
-        prop: "name",
-        label: "项目名称"
-      },
-      {
-        prop: "manager",
-        label: "项目管理员"
-      },
-      {
-        prop: "department.departName",
-        label: "归属部门"
-      },
-      {
-        prop: "members",
-        label: "项目成员"
-      },
-      {
-        prop: "gmtCreate",
-        label: "创建时间",
-        filter: "formatTime"
-      },
-      {
-        prop: "gmtUpdate",
-        label: "更新时间",
-        filter: "formatTime"
-      }
-    ],
-    operation: [
-      {
-        label: "修改",
-        color: "primary",
-        event: "editRow"
-      },
-      {
-        label: "删除",
-        color: "danger",
-        event: "delRow"
-      }
+    query: [
+        { type: 'input', label: '实例名称或实例ID', value: 'search' },
+        {
+            type: 'button',
+            label: '查询',
+            event: 'search',
+            icon: 'el-icon-search',
+            disabled: this.loading
+        },
+        {
+            type: 'button',
+            label: '创建实例',
+            event: 'create',
+            icon: 'el-icon-plus'
+        }
     ]
   },
-  properties: [
-    {
-      prop: "name",
-      label: "项目名称",
-      placeholder: "请输入项目名称",
-      defaultValue: "''",
-      ui: "el-input",
-      required: "请输入项目名称"
-    },
-    {
-      prop: "departmentId",
-      label: "项目部门",
-      placeholder: "请选择项目部门",
-      defaultValue: "''",
-      ui: "el-select",
-      data: [
-        {
-          label: "考拉",
-          value: "1"
-        }
-      ],
-      required: "请选择项目部门"
+  tableConfig: {
+    fieldList: [
+        { label: 'ID', value: 'id' },
+        { label: '名称', value: 'instanceName' },
+        { label: '实例状态', value: 'status' },
+        { label: '资源类型', value: 'members' },
+        { label: '运行时间', value: 'duration', type: 'filter', fn: 'timer' },
+        { label: '更新时间', value: 'updateTime', type: 'filter', fn: 'formatTime' }
+    ],
+    handle: {
+        fixed: 'right',
+        label: '操作',
+        width: '150',
+        btList: [
+            { label: '打开', event: 'open', icon: 'el-icon-edit' },
+            { label: '启动', event: 'open', icon: 'el-icon-edit' },
+            { label: '停止', event: 'stop', icon: 'el-icon-edit' },
+            { label: '删除', event: 'delete', btType: 'danger', icon: 'el-icon-delete' }
+        ]
     }
-  ]
+  },
+  formConfig: {
+    model: {
+        name: '',
+        departmentId: '',
+        managerList: []
+    },
+    fieldList: [
+        {
+            label: '项目名称',
+            value: 'name',
+            type: 'input',
+            disabled: !this.isAddPage,
+            placeholder: '支持格式：小写字母、数字以及-',
+            required: true,
+            pattern: /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/g
+        },
+        {
+            label: '项目部门',
+            value: 'departmentId',
+            type: 'select',
+            required: true,
+            options: this.departmentList,
+            disabled: !this.isAddPage
+        },
+        { label: '管理员', value: 'managerList', type: 'slot' },
+    ]
+  }
 };

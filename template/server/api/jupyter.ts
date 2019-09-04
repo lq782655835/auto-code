@@ -11,7 +11,7 @@ import http from '../http'
 // 列表
 export const {{#def.list1}} = data =>
     http({
-        url: `{{=it.server.prefix}}/{{=it.name}}`,
+        url: `{{=it.server.prefix}}/list`,
         method: 'get',
         data
     })
@@ -19,31 +19,29 @@ export const {{#def.list1}} = data =>
 // 详情
 export const {{#def.detail}} = id =>
     http({
-        url: `{{=it.server.prefix}}/{{=it.name}}`,
-        method: 'get',
-        data: {id}
+        url: `{{=it.server.prefix}}/${id}`,
+        method: 'get'
     })
 
 // 删除单条
 export const {{#def.del}} = id =>
     http({
-        url: `{{=it.server.prefix}}/{{=it.name}}`,
-        method: 'delete',
-        data: {id}
+        url: `{{=it.server.prefix}}/${id}`,
+        method: 'delete'
     })
 
 // 创建
 export const {{#def.create}} = data =>
     http({
-        url: '{{=it.server.prefix}}/{{=it.name}}',
-        method: 'POST',
+        url: `{{=it.server.prefix}}`,
+        method: 'post',
         data
     })
 
 // 更新
 export const {{#def.update}} = data =>
     http({
-        url: '{{=it.server.prefix}}/{{=it.name}}',
-        method: 'PUT',
+        url: `{{=it.server.prefix}}/${data.id}`,
+        method: 'put',
         data
     })

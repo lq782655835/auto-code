@@ -5,7 +5,7 @@
   "author": "springleo <782655835@qq.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
+    "dev": "node index.js",
     "format": "prettier --write \"./*.{js,ts,vue,json}\""
   },
   "devDependencies": {
