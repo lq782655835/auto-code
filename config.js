@@ -1,26 +1,28 @@
 module.exports = {
-  name: "jupyter",
-  cnName: "实例",
+  name: "modelv2",
+  cnName: "模型",
   server: {
     conflict: "",
-    prefix: "/jupyter/instance"
+    prefix: "/inference/v2/model"
   },
   filterConfig: {
     condition: {
-      search: ''
+      modelName: '',
+      modelType: ''
     },
     query: [
-        { type: 'input', label: '实例名称或实例ID', value: 'search' },
+        { type: 'input', label: '模型名称', value: 'modelName' },
+        { type: 'select', label: '模型类型', value: 'modelType' },
         {
             type: 'button',
             label: '查询',
             event: 'search',
             icon: 'el-icon-search',
-            disabled: this.loading
+            disabled: 'this.loading'
         },
         {
             type: 'button',
-            label: '创建实例',
+            label: '创建模型',
             event: 'create',
             icon: 'el-icon-plus'
         }
@@ -29,49 +31,45 @@ module.exports = {
   tableConfig: {
     fieldList: [
         { label: 'ID', value: 'id' },
-        { label: '名称', value: 'instanceName' },
-        { label: '实例状态', value: 'status' },
-        { label: '资源类型', value: 'members' },
-        { label: '运行时间', value: 'duration', type: 'filter', fn: 'timer' },
-        { label: '更新时间', value: 'updateTime', type: 'filter', fn: 'formatTime' }
+        { label: '模型名称', value: 'modelName' },
+        { label: '模型类型', value: 'modelType' },
     ],
     handle: {
         fixed: 'right',
         label: '操作',
         width: '150',
         btList: [
-            { label: '打开', event: 'open', icon: 'el-icon-edit' },
-            { label: '启动', event: 'open', icon: 'el-icon-edit' },
-            { label: '停止', event: 'stop', icon: 'el-icon-edit' },
+            { label: '新增版本', event: 'open', icon: 'el-icon-plus' },
             { label: '删除', event: 'delete', btType: 'danger', icon: 'el-icon-delete' }
         ]
     }
   },
   formConfig: {
     model: {
-        name: '',
-        departmentId: '',
-        managerList: []
+      modelName: '',
+      modelType: '',
+      sourceType: '',
+      fileName: '',
+      sourceLink: '',
+      runtimeArgs: '',
+      metadata: ''
     },
     fieldList: [
         {
-            label: '项目名称',
-            value: 'name',
+            label: '模型名称',
+            value: 'modelName',
             type: 'input',
-            disabled: !this.isAddPage,
-            placeholder: '支持格式：小写字母、数字以及-',
-            required: true,
-            pattern: /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/g
+            disabled: '!this.isAddPage',
+            required: true
         },
         {
-            label: '项目部门',
-            value: 'departmentId',
+            label: '模型类型',
+            value: 'modelType',
             type: 'select',
             required: true,
             options: this.departmentList,
             disabled: !this.isAddPage
         },
-        { label: '管理员', value: 'managerList', type: 'slot' },
     ]
   }
 };

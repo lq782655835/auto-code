@@ -7,16 +7,17 @@ const render = require("consolidate").dot.render;
 const doT = require("dot");
 doT.templateSettings.strip = false;
 
+const isDev = true
 const util = require("./util");
 const source = util.path("template");
-const dest = util.path( true ? './dist' : "/Users/liaoqiao/netease/deeplearn-fed-platform/src");
+const dest = util.path( isDev ? './dist' : "/Users/your-project/src");
 
 Metalsmith(source)
   .metadata(require("./config")) // data source
   .use(renderTemplateFiles())
   .source(".") // start from template root instead of `./src` which is Metalsmith's default for `source`
   .destination(dest)
-  .clean(true)
+  .clean(isDev)
   .build(function(err, files) {
     if (err) {
       throw err;

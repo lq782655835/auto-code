@@ -17,8 +17,8 @@
         <u-layout dir="v">
             <u-page-form
                 v-model="form"
-                :ref-obj.sync="formConfig.ref"
-                :field-list="formConfig.fieldList"
+                :refObj.sync="formConfig.ref"
+                :fieldList="formConfig.fieldList"
             />
             <u-layout alignment="center">
                 <el-button type="primary" @click="submit">{{='{'+'{getSubmitBtnText}'+'}'}}</el-button>
@@ -56,10 +56,9 @@ export default class ModifyDialog extends Mixins(ModelCloseMixin) {
     }
 
     async mounted() {
-        if (this.isAddPage) {
-            console.log('new add')
-        } else {
-            this.form = await {{#def.detail}}(this.id) as any
+        if (!this.isAddPage) {
+            const detail = await {{#def.detail}}(this.id) as any
+            this.form = {...this.form, ...detail}
         }
     }
 
@@ -76,6 +75,3 @@ export default class ModifyDialog extends Mixins(ModelCloseMixin) {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

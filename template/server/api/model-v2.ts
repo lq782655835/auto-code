@@ -1,6 +1,6 @@
 {{##def.capitalizeName:{{=it.server.conflict+it.name.charAt(0).toUpperCase()+it.name.slice(1)}}#}}
 
-{{##def.list1:get{{#def.capitalizeName}}List#}}
+{{##def.allList:get{{#def.capitalizeName}}List#}}
 {{##def.detail:get{{#def.capitalizeName}}DetailById#}}
 {{##def.del:del{{#def.capitalizeName}}ById#}}
 {{##def.create:create{{#def.capitalizeName}}#}}
@@ -9,7 +9,7 @@
 import http from '../http'
 
 // 列表
-export const {{#def.list1}} = data =>
+export const {{#def.allList}} = data =>
     http({
         url: `{{=it.server.prefix}}/list`,
         method: 'get',
@@ -39,9 +39,9 @@ export const {{#def.create}} = data =>
     })
 
 // 更新
-export const {{#def.update}} = data =>
+export const {{#def.update}} = (id, data) =>
     http({
-        url: `{{=it.server.prefix}}/${data.id}`,
+        url: `{{=it.server.prefix}}/${id}`,
         method: 'put',
         data
     })
