@@ -13,7 +13,7 @@
     "prettier": "^1.18.2"
   },
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.2",
     "consolidate": "^0.15.1",
     "dot": "^1.1.2",
     "fs-extra": "^8.1.0",
